@@ -1,10 +1,19 @@
-import { Component } from '@angular/core';
+import { AuthService } from "./auth.service";
+import { Component } from "@angular/core";
+import { Router } from "@angular/router";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.sass']
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.sass"]
 })
 export class AppComponent {
-  title = 'shop-application';
+  constructor(private auth: AuthService, router: Router) {
+    auth.user$.subscribe(user => {
+      if (user) {
+        let returnUrl = localStorage.getItem("returnUrl");
+        router.navigateByUrl(returnUrl);
+      }
+    });
+  }
 }
